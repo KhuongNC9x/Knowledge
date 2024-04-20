@@ -1,3 +1,9 @@
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.SimpleNotificationService;
+using Amazon.SimpleNotificationService.Model;
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -60,8 +66,48 @@ app.MapGet("/long-running-request", async (CancellationToken cancellationToken) 
     .WithName("GetAllData")
     .WithOpenApi();
 
-app.Run();
+app.MapPost("/upload-large-file", async ([FromForm] FileUploadRequest request, CancellationToken cancellationToken) =>
+{
+    try
+    { 
+        // Cannot run as I don't have profile
+        var s3Client = new AmazonS3Client();
+        await s3Client.PutObjectAsync(new PutObjectRequest()
+        {
+            BucketName = "user-service-large-messages",
+            Key = $"{Guid.NewGuid()} - {request.File.FileName}",
+            InputStream = request.File.OpenReadStream()
+        }, cancellationToken);
 
+        // Side effect
+        await PerformAdditionalTasks(cancellationToken);
+        return Results.NoContent();
+    }
+    catch (OperationCanceledException)
+    {
+        return Results.StatusCode(499);
+    }
+})
+    .WithName("UploadLargeFile")
+    .DisableAntiforgery()
+    .WithOpenApi();
+
+static async Task PerformAdditionalTasks(CancellationToken cancellationToken)
+{
+    await Task.Delay(1000, cancellationToken);
+
+    var snsClient = new AmazonSimpleNotificationServiceClient();
+    await snsClient.PublishAsync(new PublishRequest()
+    {
+        TopicArn = "<SNS TOPIC ARN>",
+        Message = "UserUploadedFileEvent"
+    }, cancellationToken);
+}
+
+app.Run();
+record FileUploadRequest(IFormFile File)
+{
+}
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
