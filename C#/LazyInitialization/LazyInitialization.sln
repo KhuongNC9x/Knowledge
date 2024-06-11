@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazyInitialization", "LazyInitialization.csproj", "{820C19E4-C0A1-46BD-A7DD-AB7BB2A60B93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{820C19E4-C0A1-46BD-A7DD-AB7BB2A60B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820C19E4-C0A1-46BD-A7DD-AB7BB2A60B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820C19E4-C0A1-46BD-A7DD-AB7BB2A60B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820C19E4-C0A1-46BD-A7DD-AB7BB2A60B93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {736C9BCC-C4CD-45EE-9B6C-D45FC5B10D37}
+	EndGlobalSection
+EndGlobal
